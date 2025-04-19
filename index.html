@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>📝 To-Do List</h1>
+
+      <div class="input-group">
+        <input type="text" id="todo-input" placeholder="Enter a task..." />
+        <button id="add-btn">Add</button>
+      </div>
+
+      <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+      const input = document.getElementById("todo-input");
+      const addBtn = document.getElementById("add-btn");
+      const todoList = document.getElementById("todo-list");
+
+      let editingTask = null;
+
+      addBtn.addEventListener("click", () => {
+        const task = input.value.trim();
+
+        if (task === "") return;
+
+        if (editingTask) {
+          editingTask.querySelector("span").textContent = task;
+          editingTask = null;
+          addBtn.textContent = "Add";
+          input.value = "";
+        } else {
+          addTask(task);
+          input.value = "";
+        }
+      });
+
+      function addTask(taskText) {
+        const li = document.createElement("li");
+        const span = document.createElement("span");
+        span.textContent = taskText;
+
+        const delbtn = document.createElement("button");
+        delbtn.textContent = "Delete Task";
+
+        delbtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          li.remove();
+        });
+
+        const editbtn = document.createElement("button");
+        editbtn.textContent = "Edit Task";
+
+        editbtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          input.value = span.textContent;
+          editingTask = li;
+          addBtn.textContent = "Conform";
+        });
+
+        li.appendChild(span);
+        li.appendChild(editbtn);
+        li.appendChild(delbtn);
+        todoList.appendChild(li);
+      }
+    </script>
+  </body>
+</html>
